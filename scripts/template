@@ -2,7 +2,7 @@ tproxy-port: 9898
 mixed-port: 7890
 mode: rule
 allow-lan: true
-unified-delay: true
+unified-delay: false
 bind-address: '*'
 log-level: warning
 ipv6: false
@@ -11,18 +11,19 @@ external-controller: 0.0.0.0:9090
 external-ui: dashboard/dist
 tcp-concurrent: false
 interface-name: ""
-enable-process: false
+#出口网卡名称 可用来桥接VPN类软件（tun0）
+enable-process: true
 geodata-loader: memconservative
 inbound-tfo: false
 secret: ""
-# geox-url: {mmdb: "", geoip: "", geosite: ""}
+
 profile:
   store-selected: true
-  store-fake-ip: false
-experimental: {
-    sniff-tls-sni: false,
+  store-fake-ip: true
+experimental:
+    sniff-tls-sni: false
     fingerprint: ""
-}
+
 sniffer:
   enable: false
   sniffing:
@@ -35,38 +36,47 @@ sniffer:
   port-whitelist:
     - 443
     - 80
-hosts: {
-  "cacerts.digicert.com": "104.21.21.147",
-  "ota.googlezip.net": "127.0.0.1",
-  "ota-cache1.googlezip.net": "127.0.0.1",
-  "ota-cache2.googlezip.net": "127.0.0.1"
-}
+  skip-domain:
+  
+hosts:
+
 tun:
   enable: false
   device: Meta
   stack: system
+  #gvisor 可切换
   dns-hijack:
     - any:53
-  auto-route: false
-  auto-detect-interface: false
+  auto-route: true
+  auto-detect-interface: true
+
+
 dns:
   enable: true
-  ipv6: true
-  prefer-h3: false
+  ipv6: false
+  prefer-h3: false  #这是什么鬼东西？
   default-nameserver:
     - 8.8.8.8
   listen: 0.0.0.0:1053
   use-hosts: true
-  enhanced-mode: fake-ip
+  enhanced-mode: redir-host
   fake-ip-range: 198.18.0.1/16
-  fake-ip-filter: [
-    "*.local",
-    "*.localhost",
-  ]
+  fake-ip-filter:
+    - localhost.ptlogin2.qq.com
+    - '*.local'
+    - '*.localhost'
+    - '*.lan'
+    - '*.linksys.com'
+    - '*.ntp.*'
+    - '+.lan'
+    - '+.cn'
   nameserver:
-    - '9.9.9.9'               # Quad9
-    - '1.1.1.1'               # Cloudflare
-    - '8.8.4.4'               # Google
+    - 223.5.5.5
+    - 1.1.1.1               # Cloudflare
+    - 8.8.4.4               # Google
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://120.53.53.53/dns-query
 #  fallback: []
 #  fallback-filter:
 #    geoip: false

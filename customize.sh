@@ -47,7 +47,6 @@ mkdir -p ${MODPATH}/system/bin
 mkdir -p ${clash_data_dir}/run
 mkdir -p ${clash_data_dir}/scripts
 mkdir -p ${clash_data_dir}/mosdns
-mkdir -p ${clash_data_dir}/assets
 
 case "${ARCH}" in
     arm)
@@ -72,6 +71,10 @@ unzip -o ${MODPATH}/dashboard.zip -d ${clash_data_dir}/dashboard/ >&2
 ui_print "- Move Scripts Clash"
 mv ${MODPATH}/scripts/* ${clash_data_dir}/scripts/
 mv ${clash_data_dir}/scripts/template ${clash_data_dir}/
+
+mv ${MODPATH}/proxy_provider/ ${clash_data_dir}/
+mv ${MODPATH}/rule_proider/ ${clash_data_dir}/
+mv ${MODPATH}/config.yaml/ ${clash_data_dir}/
 
 ui_print "- Move Cert&Geo"
 mv ${clash_data_dir}/scripts/cacert.pem ${MODPATH}${ca_path}

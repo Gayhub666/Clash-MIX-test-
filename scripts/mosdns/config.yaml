@@ -75,6 +75,10 @@ plugins:
           idle_timeout: 86400
           trusted: true
 
+#作用：让clash拿到域名。如果直接解析，clash只能拿到ip
+#对于tun,看你劫持与否，也可以有用，tun的dns劫持可以劫持不存在的
+#然后iptables依旧去转发53到mosdns
+
   - tag: query_is_ad_domain
     type: query_matcher
     args:
